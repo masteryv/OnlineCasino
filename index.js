@@ -40,10 +40,40 @@ app.get('/signup', function(req, res){
 
 app.post('/signup', async function(req,res) {
 
+    const validprnr = checkPersnr(req.body.personnr);
+    if(validprnr == true){
+
+        
     const result = await conn.query('INSERT INTO users (name, email, password, personnr, img, telefon, address, verified, cash) VALUES (?,?,?,?,?,?,?,?,?)' , [req.body.name, req.body.email , req.body.password, req.body.personnr, "/assets/img/default.jpg", req.body.telefon, req.body.address, true, 0])
-    console.log(result);
-    res.send(req.body)
+    res.send(result)
+    } else {
+        res.render("/register")
+    }
+
 })
+
+function checkPersnr(personnr){
+
+    let nrs = personnr.split('');
+    let check = 0;
+    for(let i = 0; i < 9 ; i++ ){ 
+        let add = nrs[i] * (((i+1) % 2) + 1)
+        check += add % 10
+        if (add > 10){
+            check += 1
+            check += add % 10
+
+        }else{
+            check += add
+        }
+
+    }
+    if((10 - (check % 10)) % 10 == personnr[9]){
+        return true;
+    }else{
+        return false;
+    }
+}
 
 app.listen(port, function(){
     console.log(`servern kör på http://localhost:${port}`);
