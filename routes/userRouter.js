@@ -11,18 +11,15 @@ router.get('/signup', function(req, res){
     res.render('register');
 });
 
-router.post('/login', async function(req,res){
-    let email = req.body.email
-    let user = await dataBaseConn.kallesbananpankaka(email)
-    let test = await bcrypt.compare(req.body.password, user.password)
-    if (test == true){
-        res.render("index")
+router.post('/login', async function (req,res) {
+    let user = await dataBaseConn.kallesbananpankaka(req.body.email);
+    if (await bcrypt.compare(req.body.password, user.password)){
+        req.session.user = {id:user.email}
+        res.redirect("/games");
     }else{
-        res.redirect("https://www.lbs.se")
+        res.render("login", {msg: "please try again"});
     }
-    console.log(user)
-
-})
+});
 
 
 router.post('/signup', async function(req,res) {
@@ -58,3 +55,5 @@ function checkPersnr(personnr){
         return false;
     }
 }
+    
+module.exports = router;
