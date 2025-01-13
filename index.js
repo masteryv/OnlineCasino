@@ -36,6 +36,17 @@ app.use(sessions({
     resave: false,
 }));
 
+app.use((req, res, next) => {
+    res.locals.isLoggedIn = !!req.session.user ? true : false;
+    if (req.session.user) {
+        next();
+    }else if(req.originalUrl == "/" || req.originalUrl == "/signup" || req.originalUrl == "/login") {
+        next();
+    }else{
+        res.render('login');
+    }
+})
+
 
 app.get('/', async function(req, res){
     const test = await conn.query(`SELECT * FROM users`);
