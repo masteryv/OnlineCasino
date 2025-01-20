@@ -11,7 +11,13 @@
     <h1>Riggad AB</h1>
     <nav>
         <a href="/">Start</a>
+        <% if(isLoggedIn) {%>
+        <a href="/games">Games</a>
+        <a href="/settings">Settings</a>
+        <% } else { %>
+
         <a href="/login">Login</a>
         <a href="/signup">Register</a>
+        <% } %>
     </nav>
 </header>
