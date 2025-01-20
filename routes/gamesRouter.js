@@ -6,9 +6,9 @@ router.get('/games', function(req, res){
     res.render('games');
 });
 
-router.get('/game/:id', async function(req, res){
+router.get('/games/:game', async function(req, res){
 
-    res.send(RegExp.param.game)
+    res.send(req.params.game)
 })
 
 module.exports = router;

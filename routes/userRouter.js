@@ -11,6 +11,11 @@ router.get('/signup', function(req, res){
     res.render('register');
 });
 
+router.get('/settings', async function(req, res){
+    let user = await dataBaseConn.kallesbananpankaka(req.session.user.id);
+    res.render('settings', {user});
+})
+
 router.post('/login', async function (req,res) {
     let user = await dataBaseConn.kallesbananpankaka(req.body.email);
     if (await bcrypt.compare(req.body.password, user.password)){
