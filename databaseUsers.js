@@ -29,7 +29,23 @@ const addUser = async function addUser(name, email, password, personnr, telefon,
     
 }
 
+const addGame = async function addGame(name,) {
+    let url = name.replace(' ', '-');
+    const res  = await conn.query('INSERT INTO games (name, etc) VALUES (?,?,?,?,?,?,?,?,?)' , [name, 0, chance, 0, url, text])
+    return res[0]
+    
+}
+const updateFunds = async function updateFunds(cash, email){
+    const [rows] = await conn.query(`   
+        UPDATE users
+        SET cash = ?
+        WHERE email =?
+        `, [cash, email]);
+        return rows
+}
+
 module.exports = {
    kallesbananpankaka: getUser,
    addUser: addUser,
+   updateFunds: updateFunds
 }

@@ -14,6 +14,22 @@ router.get('/signup', function(req, res){
 router.get('/settings', async function(req, res){
     let user = await dataBaseConn.kallesbananpankaka(req.session.user.id);
     res.render('settings', {user});
+
+});
+
+router.post('/settings', async function(req, res){
+    let user = await dataBaseConn.kallesbananpankaka(req.session.user.id);
+    let addedMoney = Number(req.body.funds);
+    if(!isNaN(addedMoney)&& addedMoney > 0){
+        let newMoney = Number(req.body.funds) + user.cash;
+        let update = await dataBaseConn.updateFunds(newMoney, req.session.user.id); 
+        user.cash = newMoney;
+        user.msg ="Now You can gamble even more!";
+        console.log(update);
+    }else{
+        user.msg ="Please add money not letters! Also you can't take money!!";
+    }
+    res.render('settings', {user});
 })
 
 router.post('/login', async function (req,res) {
@@ -43,7 +59,6 @@ router.post('/signup', async function(req,res) {
 })
 
 function checkPersnr(personnr){
-
     let nrs = personnr.split('');
     let check = 0;
     for(let i = 0; i < 9 ; i++ ){ 

@@ -58,7 +58,9 @@ app.get('/', async function(req, res){
 app.use("/", userRouter)
 app.use("/", gamesRouter)
 
-
+app.use(function(req, res, next){
+    res.status(404).render("404");
+});
 
 app.listen(port, function(){
     console.log(`servern kör på http://localhost:${port}`);
