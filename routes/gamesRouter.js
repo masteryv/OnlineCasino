@@ -31,4 +31,13 @@ router.get('/games/:game', async function(req, res){
     }
 })
 
+router.post('/games/script.js', async function(req, res){
+    let game = await gameFunc.Coinflip(req.body.choise)
+    let multi = game.status ? 0 : -1;
+    let bet = req.body.bet * multi;
+    let update = await dataBasConn.updateFunds(Number(req.body.bet) * multi, req.session.user.id)
+    game.funds = update.cash
+    res.status(200).json({ game });
+})
+
 module.exports = router;
