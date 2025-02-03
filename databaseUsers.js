@@ -31,7 +31,7 @@ const addUser = async function addUser(name, email, password, personnr, telefon,
 
 const addGame = async function addGame(name, chance, text) {
     let url = name.replace(' ', '-');
-    const res  = await conn.query('INSERT INTO games (name, stats, chance, url, text) VALUES (?,?,?,?,?,?)' , [name, 0, chance, 0, url, text])
+    const res  = await conn.query('INSERT INTO games (name, stats, chance, attemps, url, text) VALUES (?,?,?,?,?,?)' , [name, 0, chance, 0, url, text])
     return res[0]
     
 }

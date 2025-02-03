@@ -3,7 +3,8 @@ const router = express.Router();
 const dataBaseConn = require("../databaseUsers");
 
 router.get('/games', function(req, res){
-    res.render('games');
+    let games = [];
+    res.render('games', {games});
 });
 
 router.get('/addGames', function(req, res){
