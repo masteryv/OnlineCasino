@@ -18,18 +18,17 @@ router.get('/settings', async function(req, res){
 });
 
 router.post('/settings', async function(req, res){
-    let user = await dataBaseConn.kallesbananpankaka(req.session.user.id);
     let addedMoney = Number(req.body.funds);
-    if(!isNaN(addedMoney)&& addedMoney > 0){
-        let newMoney = Number(req.body.funds) + user.cash;
-        let update = await dataBaseConn.updateFunds(newMoney, req.session.user.id); 
-        user.cash = newMoney;
-        user.msg ="Now You can gamble even more!";
-        console.log(update);
-    }else{
-        user.msg ="Please add money not letters! Also you can't take money!!";
+    if(!isNaN(addedMoney) && addedMoney > 0){
+        let user = await dataBaseConn.updateFunds(addedMoney, req.session.user.id);
+        user.msg = "Now you can gamble even more!";
+        res.render('settings', {user})
+
+    } else {
+        let user = await dataBaseConn.kallesbananpankaka(req.session.user.id);
+        user.msg = "Use real money dummy";
+        res.render('settings', {user})
     }
-    res.render('settings', {user});
 })
 
 router.post('/login', async function (req,res) {

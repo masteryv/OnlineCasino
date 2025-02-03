@@ -1,5 +1,11 @@
 <%- include("templates/head.ejs"); %>
 
-Games
+<% games.forEach(function(game){ %>
+    <div class="game">
+        <h3><a href="/games/<%= game.url %>"><%= game.name %></a></h3>
+        <img src="/public/img/deafult-game.png">
+        <p><%= game.text %></p>
+    </div>
+<% }); %>
 
 <%- include("templates/footer.ejs"); %>

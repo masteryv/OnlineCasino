@@ -29,23 +29,44 @@ const addUser = async function addUser(name, email, password, personnr, telefon,
     
 }
 
-const addGame = async function addGame(name,) {
+const addGame = async function addGame(name, chance, text) {
     let url = name.replace(' ', '-');
-    const res  = await conn.query('INSERT INTO games (name, etc) VALUES (?,?,?,?,?,?,?,?,?)' , [name, 0, chance, 0, url, text])
+    const res  = await conn.query('INSERT INTO games (name, stats, chance, url, text) VALUES (?,?,?,?,?,?)' , [name, 0, chance, 0, url, text])
     return res[0]
     
 }
+
 const updateFunds = async function updateFunds(cash, email){
-    const [rows] = await conn.query(`   
-        UPDATE users
-        SET cash = ?
-        WHERE email =?
-        `, [cash, email]);
-        return rows
+    const [update] = await conn.query(`
+        UPDATE users SET cash = cash + ? WHERE email = ?
+    `, [cash, email]);
+
+    if(update.affectedRows == 1) {
+        const [user] = await conn.query(`
+            SELECT * FROM users WHERE email = ?
+        `, [email]);
+        return user[0]
+    }
+}
+
+const getGames = async function getGames(){
+    const [res] = await conn.query(`SELECT * FROM games`);
+    return res;
+}
+
+const getGame = async function getGame(game){
+    const [res] = await conn.query(`
+        SELECT * FROM games
+        WHERE url = ?
+        `, [game]);
+    return res[0];
 }
 
 module.exports = {
    kallesbananpankaka: getUser,
    addUser: addUser,
-   updateFunds: updateFunds
+   addGame: addGame,
+   updateFunds: updateFunds,
+   getGames: getGames,
+   getGame: getGame
 }

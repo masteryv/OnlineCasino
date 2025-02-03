@@ -9,7 +9,7 @@ const mysql = require("mysql2/promise")
 
 const userRouter = require("./routes/userRouter")
 const gamesRouter = require("./routes/gamesRouter")
-
+app.use(express.json());
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv").config()
 
