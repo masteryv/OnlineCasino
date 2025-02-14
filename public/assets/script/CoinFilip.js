@@ -1,7 +1,7 @@
 let holder;
 let currentBalance = 20;
 let balanceText;
-
+console.log("frontend!!!")
 function placeBet(){
     holder.innerHTML = "";
     let input = document.createElement("input")
@@ -67,11 +67,16 @@ function flip(choice){
 }
 
 
-async function afterGame(choice, bet){
+function afterGame(results, bet){
     let text;
-    let results = await callGame(choice, bet);
-    console.log(results)
-    currentBalance = results.funds;
+    console.log(bet)
+    if(results.status){
+        text = "Congrats you won " + parseInt(bet * 2)
+        currentBalance += bet * 2;
+    }else {
+        text = "Unlucky! you lost " + parseInt(bet)
+    }
+    console.log(currentBalance)
 
     balanceText.innerText = "Current balance: " + currentBalance;
 
@@ -101,6 +106,12 @@ async function afterGame(choice, bet){
     holder.append(textEl)
     holder.append(img)
 }
+async function afterGame(choice, bet){
+    let text;
+    let results = await callGame(choice, bet);
+    console.log(results)
+    currentBalance = results.funds;
+}
 
 async function callGame(choice, bet) {
     let info = {
@@ -128,7 +139,3 @@ document.addEventListener("DOMContentLoaded", function(){
     document.querySelector("body").prepend(balanceText)
     placeBet() 
 })
-
-
-
-
